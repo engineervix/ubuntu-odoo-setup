@@ -21,7 +21,7 @@
 # - First things first, this script **assumes** that your Ubuntu server has been setup using
 #   <https://github.com/engineervix/ubuntu-server-setup>. If this is the case ... proceed ...
 # - download the script from GitHub:
-#   wget https://github.com/engineervix/ubuntu-odoo-setup/raw/main/odoo-install.sh
+#   wget https://raw.githubusercontent.com/engineervix/ubuntu-odoo-setup/main/odoo_install.sh
 # - make your own modifications if you wish to change some things
 # - ensure that it's executable:
 #   chmod +x odoo-install.sh
