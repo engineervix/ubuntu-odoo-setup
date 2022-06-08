@@ -41,7 +41,7 @@
 # Preliminaries
 #--------------------------------------------------
 
-read -rp "Please enter the name of your project (no spaces, no 'strange' characters):" PROJECT_NAME
+read -rp "Please enter the name of your project (no spaces, no 'strange' characters):     " PROJECT_NAME
 OE_USER="$USER"
 OE_HOME="$HOME/projects/${PROJECT_NAME}"
 OE_HOME_EXT="$OE_HOME/${PROJECT_NAME}-server"
@@ -61,19 +61,19 @@ OE_SUPERADMIN="admin"
 GENERATE_RANDOM_PASSWORD="True"
 OE_CONFIG="${PROJECT_NAME}-server"
 # Set the website name
-read -rp "Please enter the website name (e.g. sub.domain.com):" WEBSITE_NAME
+read -rp "Please enter the website name (e.g. sub.domain.com):     " WEBSITE_NAME
 # Set the default Odoo longpolling port (you still have to use -c /etc/odoo-server.conf for example to use this.)
 LONGPOLLING_PORT="8072"
 # Set to "True" to install certbot and have ssl enabled, "False" to use http
 ENABLE_SSL="True"
 # Provide Email to register ssl certificate
-read -rp "Please provide Email to register ssl certificate:" ADMIN_EMAIL
+read -rp "Please provide Email to register ssl certificate:     " ADMIN_EMAIL
 
 #--------------------------------------------------
 # Install Dependencies
 #--------------------------------------------------
 echo -e "\n--- Installing some Python deps --"
-sudo apt-get install python3-venv libxslt-dev libzip-dev libldap2-dev libsasl2-dev slapd ldap-utils lcov valgrind node-less libpng-dev libpng++-dev gdebi-core -y
+sudo apt-get install python3-venv libxslt-dev libzip-dev libldap2-dev libsasl2-dev slapd ldap-utils lcov valgrind libpng-dev libpng++-dev gdebi-core -y
 
 echo -e "\n---- Creating Virtual Environment ----"
 
@@ -89,7 +89,6 @@ pip install wheel
 pip install -r https://github.com/odoo/odoo/raw/${OE_VERSION}/requirements.txt
 
 echo -e "\n---- Installing rtlcss for RTL support ----"
-#sudo apt-get install nodejs npm -y
 sudo npm install -g rtlcss
 
 echo -e "\n---- Create Log directory ----"
@@ -120,15 +119,15 @@ sudo ln -s /usr/local/bin/wkhtmltoimage /usr/bin
 # Install ODOO
 #--------------------------------------------------
 echo -e "\n==== Installing ODOO Server ===="
-sudo git clone --depth 1 --branch $OE_VERSION https://www.github.com/odoo/odoo "$OE_HOME_EXT"/
+git clone --depth 1 --branch $OE_VERSION https://www.github.com/odoo/odoo "$OE_HOME_EXT"/
 
 if [ $IS_ENTERPRISE = "True" ]; then
     # Odoo Enterprise install!
     pip install psycopg2-binary pdfminer.six
-    sudo su "$OE_USER" -c "mkdir -p $OE_HOME/enterprise"
-    sudo su "$OE_USER" -c "mkdir -p $OE_HOME/enterprise/addons"
+    mkdir -p "$OE_HOME/enterprise"
+    mkdir -p "$OE_HOME/enterprise/addons"
 
-    GITHUB_RESPONSE=$(sudo git clone --depth 1 --branch $OE_VERSION https://www.github.com/odoo/enterprise "$OE_HOME/enterprise/addons" 2>&1)
+    GITHUB_RESPONSE=$(git clone --depth 1 --branch $OE_VERSION https://www.github.com/odoo/enterprise "$OE_HOME/enterprise/addons" 2>&1)
     while [[ $GITHUB_RESPONSE == *"Authentication"* ]]; do
         echo "------------------------WARNING------------------------------"
         echo "Your authentication with Github has failed! Please try again."
@@ -136,7 +135,7 @@ if [ $IS_ENTERPRISE = "True" ]; then
         echo "TIP: Press ctrl+c to stop this script."
         echo "-------------------------------------------------------------"
         echo " "
-        GITHUB_RESPONSE=$(sudo git clone --depth 1 --branch $OE_VERSION https://www.github.com/odoo/enterprise "$OE_HOME/enterprise/addons" 2>&1)
+        GITHUB_RESPONSE=$(git clone --depth 1 --branch $OE_VERSION https://www.github.com/odoo/enterprise "$OE_HOME/enterprise/addons" 2>&1)
     done
 
     echo -e "\n---- Added Enterprise code under $OE_HOME/enterprise/addons ----"
@@ -147,11 +146,11 @@ if [ $IS_ENTERPRISE = "True" ]; then
 fi
 
 echo -e "\n---- Create custom module directory ----"
-sudo su "$OE_USER" -c "mkdir -p $OE_HOME/custom"
-sudo su "$OE_USER" -c "mkdir -p $OE_HOME/custom/addons"
+mkdir -p "$OE_HOME/custom"
+mkdir -p "$OE_HOME/custom/addons"
 
-echo -e "\n---- Setting permissions on home folder ----"
-sudo chown -R "$OE_USER:$OE_USER" "$OE_HOME/*"
+# echo -e "\n---- Setting permissions on home folder ----"
+# sudo chown -R "$OE_USER:$OE_USER" "$OE_HOME/"
 
 echo -e "* Create server config file"
 
@@ -164,7 +163,8 @@ if [ $GENERATE_RANDOM_PASSWORD = "True" ]; then
     OE_SUPERADMIN=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 16 | head -n 1)
 fi
 sudo su root -c "printf 'admin_passwd = ${OE_SUPERADMIN}\n' >> /etc/${OE_CONFIG}.conf"
-if [ $OE_VERSION -gt "11" ];then
+# shellcheck disable=SC2072
+if [[ $OE_VERSION > "11.0" ]];then
     sudo su root -c "printf 'http_port = ${OE_PORT}\n' >> /etc/${OE_CONFIG}.conf"
 else
     sudo su root -c "printf 'xmlrpc_port = ${OE_PORT}\n' >> /etc/${OE_CONFIG}.conf"
@@ -180,10 +180,10 @@ sudo chown "$OE_USER:$OE_USER" /etc/"${OE_CONFIG}".conf
 sudo chmod 640 /etc/"${OE_CONFIG}".conf
 
 echo -e "* Create startup file"
-sudo su root -c "echo '#!/usr/bin/env bash' >> $OE_HOME_EXT/start.sh"
-sudo su root -c "echo '$OE_HOME_EXT/odoo-bin --config=/etc/${OE_CONFIG}.conf' >> $OE_HOME_EXT/start.sh"
-sudo chmod 755 "$OE_HOME_EXT"/start.sh
-sudo chown "$OE_USER:$OE_USER" "$OE_HOME_EXT"/start.sh
+echo "#!/usr/bin/env bash" >> "$OE_HOME_EXT/start.sh"
+echo "$OE_HOME_EXT/odoo-bin --config=/etc/${OE_CONFIG}.conf" >> "$OE_HOME_EXT/start.sh"
+chmod 755 "$OE_HOME_EXT"/start.sh
+# sudo chown "$OE_USER:$OE_USER" "$OE_HOME_EXT"/start.sh
 
 #--------------------------------------------------
 # Adding the ODOO project as a daemon (Systemd)
