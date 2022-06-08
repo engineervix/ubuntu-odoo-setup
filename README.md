@@ -3,8 +3,9 @@
 [![ShellCheck](https://github.com/engineervix/ubuntu-odoo-setup/actions/workflows/main.yml/badge.svg)](https://github.com/engineervix/ubuntu-odoo-setup/actions/workflows/main.yml)
 ![GitHub last commit](https://img.shields.io/github/last-commit/engineervix/ubuntu-odoo-setup)
 ![GitHub commits since latest release (by SemVer)](https://img.shields.io/github/commits-since/engineervix/ubuntu-odoo-setup/latest/main)
+[![last commit](https://badgen.net/github/last-commit/engineervix/ubuntu-odoo-setup)](https://github.com/engineervix/ubuntu-odoo-setup/commits/)
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
-![License](https://img.shields.io/github/license/engineervix/ubuntu-odoo-setup)
+[![License : MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![works badge](https://cdn.jsdelivr.net/gh/nikku/works-on-my-machine@v0.2.0/badge.svg)](https://github.com/nikku/works-on-my-machine)
 
 ## Introduction ✨
