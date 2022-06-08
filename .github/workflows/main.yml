@@ -1,0 +1,74 @@
+name: ShellCheck
+
+env:
+  TERM: screen-256color
+
+on:
+  pull_request:
+    branches: ["master", "main"]
+    paths-ignore: ["docs/**"]
+
+  push:
+    branches: ["master", "main"]
+    paths-ignore: ["docs/**"]
+    tags:
+      - "v*"
+
+jobs:
+  # Runs all steps on the VM
+  shellcheck:
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Checkout Code Repository
+        uses: actions/checkout@v2
+
+      - name: Install Dependencies
+        shell: bash
+        run: |
+          sudo apt install shellcheck -y
+          pip install -r misc/requirements-dev.txt
+
+      - name: Run shellcheck
+        shell: bash
+        run: |
+          echo "${{ github.ref }}"
+          bash -c 'shopt -s globstar; shellcheck ./*.sh;'
+
+  # Runs all steps on the VM
+  # Creates a GitHub Release when the shellcheck job succeeds, and only on pushes to tags.
+  release:
+    needs: shellcheck
+
+    if: needs.shellcheck.result == 'success' && startsWith( github.ref, 'refs/tags/v' )
+
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2
+
+      - name: Get the version
+        id: get_version
+        run: |
+          echo "${{ github.ref }}"
+          echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+
+      - name: Generate Release Title
+        id: get_release_title
+        shell: bash
+        run: |
+          export TODAY="($(TZ=Africa/Lusaka date --iso))"
+          echo ::set-output name=RELEASE_NAME::"${{ steps.get_version.outputs.VERSION }} $TODAY"
+
+      - name: Extract Release Notes
+        # This creates a file LATEST_RELEASE_NOTES.md in the parent directory (../)
+        shell: bash
+        run: |
+          python3 misc/release.py notes
+
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          name: ${{ steps.get_release_title.outputs.RELEASE_NAME }}
+          body_path: ../LATEST_RELEASE_NOTES.md
