@@ -55,7 +55,7 @@ function logTimestamp() {
 
 read -rp "Please enter the name of your project (no spaces, no 'strange' characters):     " RAW_PROJECT_NAME
 # ref: https://stackoverflow.com/questions/23816264/remove-all-special-characters-and-case-from-string-in-bash
-PROJECT_NAME=$($RAW_PROJECT_NAME| tr -dc '[:alnum:]\n\r' | tr '[:upper:]' '[:lower:]')
+PROJECT_NAME=$(echo "$RAW_PROJECT_NAME" | tr -dc '[:alnum:]\n\r' | tr '[:upper:]' '[:lower:]')
 OE_USER="$USER"
 OE_HOME="$HOME/projects/${PROJECT_NAME}"
 OE_HOME_EXT="$OE_HOME/${PROJECT_NAME}-server"
