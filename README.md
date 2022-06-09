@@ -18,7 +18,7 @@ This script builds on top of [Yenthe Van Ginneken's excellent and well known Odo
 - download the script from GitHub:
 
   ```bash
-  wget https://raw.githubusercontent.com/engineervix/ubuntu-odoo-setup/main/odoo_install.sh
+  wget https://github.com/engineervix/ubuntu-odoo-setup/raw/main/odoo_install.sh
   ```
 
 - make your own modifications if you wish to change some things
@@ -28,7 +28,7 @@ This script builds on top of [Yenthe Van Ginneken's excellent and well known Odo
   chmod +x odoo_install.sh
   ```
 
-- execute the script to install Odoo:
+- run the script to install Odoo:
 
   ```bash
   ./odoo-install.sh
