@@ -25,7 +25,7 @@ This script builds on top of [Yenthe Van Ginneken's excellent and well known Odo
 - ensure that it's executable:
 
   ```bash
-  chmod +x odoo-install.sh
+  chmod +x odoo_install.sh
   ```
 
 - execute the script to install Odoo:

@@ -24,7 +24,7 @@
 #   wget https://raw.githubusercontent.com/engineervix/ubuntu-odoo-setup/main/odoo_install.sh
 # - make your own modifications if you wish to change some things
 # - ensure that it's executable:
-#   chmod +x odoo-install.sh
+#   chmod +x odoo_install.sh
 # - execute the script to install Odoo:
 #   ./odoo-install.sh
 # 
