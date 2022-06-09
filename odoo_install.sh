@@ -330,7 +330,7 @@ EOF
   sudo mv -v ~/odoo /etc/nginx/sites-available/"$WEBSITE_NAME"
   sudo ln -s /etc/nginx/sites-available/"$WEBSITE_NAME" /etc/nginx/sites-enabled/"$WEBSITE_NAME"
   sudo rm -v /etc/nginx/sites-enabled/default
-  sudo service nginx reload
+  sudo systemctl reload nginx
   sudo su root -c "printf 'proxy_mode = True\n' >> /etc/${OE_CONFIG}.conf"
   echo "Done! The Nginx server is up and running. Configuration can be found at /etc/nginx/sites-available/$WEBSITE_NAME"
 else
@@ -345,7 +345,7 @@ if [ $INSTALL_NGINX = "True" ] && [ $ENABLE_SSL = "True" ] && [ "$ADMIN_EMAIL" !
   #sudo add-apt-repository ppa:certbot/certbot -y && sudo apt-get update -y
   #sudo apt-get install python3-certbot-nginx -y
   sudo certbot --nginx -d "$WEBSITE_NAME" --noninteractive --agree-tos --email "$ADMIN_EMAIL" --redirect
-  sudo service nginx reload
+  sudo systemctl reload nginx
   echo "SSL/HTTPS is enabled!"
 else
   echo "SSL/HTTPS isn't enabled due to choice of the user or because of a misconfiguration!"
@@ -358,7 +358,7 @@ fi
 echo "-----------------------------------------------------------"
 echo "Done! The $OE_CONFIG project should be up and running. Specifications:"
 echo "Port: $OE_PORT"
-echo "User service: $OE_USER"
+echo "User: $OE_USER"
 echo "Configuraton file location: /etc/${OE_CONFIG}.conf"
 echo "Logfile location: /var/log/$OE_USER"
 echo "User PostgreSQL: $OE_USER"
