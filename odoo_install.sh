@@ -4,7 +4,7 @@
 # description:  Installs Odoo on an Ubuntu server (tested with Odoo 15.0 on Ubuntu 20.04)
 # author:       Victor Miti <https://github.com/engineervix>
 # url:          <https://github.com/engineervix/ubuntu-odoo-setup>
-# version:      0.0.0
+# version:      0.1.0
 # license:      MIT
 #
 # About this script
