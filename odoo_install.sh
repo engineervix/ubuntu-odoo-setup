@@ -209,8 +209,8 @@ chmod 755 "$OE_HOME_EXT"/start.sh
 # Setup PostgreSQL Database
 #--------------------------------------------------
 echo -e "\n---- Setup PostgreSQL Database ----"
-db_name="${PROJECT_NAME}-db"
-db_user="${PROJECT_NAME}-user"
+db_name="${PROJECT_NAME}_db"
+db_user="${PROJECT_NAME}_user"
 db_password="${OE_SUPERADMIN}"
 psql -c "CREATE USER ${db_user} PASSWORD '${db_password}'"
 psql -c "CREATE DATABASE ${db_name} OWNER ${db_user}"
