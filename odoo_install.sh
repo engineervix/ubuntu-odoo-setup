@@ -173,9 +173,6 @@ echo -e "\n---- Create custom module directory ----"
 mkdir -p "$OE_HOME/custom"
 mkdir -p "$OE_HOME/custom/addons"
 
-# echo -e "\n---- Setting permissions on home folder ----"
-# sudo chown -R "$OE_USER:$OE_USER" "$OE_HOME/"
-
 echo -e "* Create server config file"
 
 sudo touch /etc/"${OE_CONFIG}".conf
@@ -207,7 +204,17 @@ echo -e "* Create startup file"
 echo "#!/usr/bin/env bash" >> "$OE_HOME_EXT/start.sh"
 echo "$OE_HOME_EXT/odoo-bin --config=/etc/${OE_CONFIG}.conf" >> "$OE_HOME_EXT/start.sh"
 chmod 755 "$OE_HOME_EXT"/start.sh
-# sudo chown "$OE_USER:$OE_USER" "$OE_HOME_EXT"/start.sh
+
+#--------------------------------------------------
+# Setup PostgreSQL Database
+#--------------------------------------------------
+echo -e "\n---- Setup PostgreSQL Database ----"
+db_name="${PROJECT_NAME}-db"
+db_user="${PROJECT_NAME}-user"
+db_password="${OE_SUPERADMIN}"
+psql -c "CREATE USER ${db_user} PASSWORD '${db_password}'"
+psql -c "CREATE DATABASE ${db_name} OWNER ${db_user}"
+psql -c "GRANT ALL PRIVILEGES ON DATABASE ${db_name} to ${db_user}"
 
 #--------------------------------------------------
 # Adding the ODOO project as a daemon (Systemd)
@@ -361,10 +368,11 @@ echo "Port: $OE_PORT"
 echo "User: $OE_USER"
 echo "Configuraton file location: /etc/${OE_CONFIG}.conf"
 echo "Logfile location: /var/log/$OE_USER"
-echo "User PostgreSQL: $OE_USER"
+echo "PostgreSQL User: $db_user"
+echo "PostgreSQL Database: $db_name"
+echo "Password superadmin (database): $OE_SUPERADMIN"
 echo "Code location: $OE_HOME"
 echo "Addons folder: $OE_HOME_EXT/addons/"
-echo "Password superadmin (database): $OE_SUPERADMIN"
 echo "Start $OE_CONFIG service: sudo systemctl start $OE_CONFIG"
 echo "Stop $OE_CONFIG service: sudo systemctl stop $OE_CONFIG"
 echo "Restart $OE_CONFIG service: sudo systemctl restart $OE_CONFIG"
