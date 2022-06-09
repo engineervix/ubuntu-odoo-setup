@@ -97,7 +97,7 @@ exec > >(tee -a "${output_file}") 2>&1
 # Install Dependencies
 #--------------------------------------------------
 echo -e "\n--- Installing some Python deps --"
-sudo apt-get install python3-venv libxslt-dev libzip-dev libldap2-dev libsasl2-dev slapd ldap-utils lcov valgrind libpng-dev libpng++-dev gdebi-core -y
+sudo apt-get install python3-venv libxslt-dev libzip-dev libldap2-dev libsasl2-dev libtiff5-dev slapd ldap-utils lcov valgrind libpng-dev libpng++-dev gdebi-core -y
 
 echo -e "\n---- Creating Virtual Environment ----"
 
