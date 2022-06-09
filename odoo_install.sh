@@ -41,6 +41,18 @@
 # Preliminaries
 #--------------------------------------------------
 
+SCRIPT_DIR="$( cd "$(dirname "$0")" >/dev/null 2>&1 || exit ; pwd -P )"
+timestamp=$(date '+%Y%m%d_%H%M%S')
+
+function logTimestamp() {
+  local filename=${1}
+  {
+    echo "===================" 
+    echo "Log generated on $(date)"
+    echo "==================="
+  } >>"${filename}" 2>&1
+}
+
 read -rp "Please enter the name of your project (no spaces, no 'strange' characters):     " PROJECT_NAME
 OE_USER="$USER"
 OE_HOME="$HOME/projects/${PROJECT_NAME}"
@@ -68,6 +80,16 @@ LONGPOLLING_PORT="8072"
 ENABLE_SSL="True"
 # Provide Email to register ssl certificate
 read -rp "Please provide Email to register ssl certificate:     " ADMIN_EMAIL
+
+output_file="${SCRIPT_DIR}/${PROJECT_NAME}_setup_output_${timestamp}.log"
+echo -e "\e[35m===========================================================\e[00m" 
+echo -e "\e[35mRunning setup script...\e[00m"
+echo -e "\e[35m===========================================================\e[00m" 
+logTimestamp "${output_file}"
+
+# Use exec and tee to redirect logs to stdout and a log file at the same time 
+# https://unix.stackexchange.com/a/145654
+exec > >(tee -a "${output_file}") 2>&1
 
 #--------------------------------------------------
 # Install Dependencies
