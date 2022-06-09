@@ -10,6 +10,8 @@
 
 This script builds on top of [Yenthe Van Ginneken's excellent and well known Odoo Install Script](https://github.com/Yenthe666/InstallScript) to make it easy and painless to setup [Odoo](https://www.odoo.com/) on a server bootstrapped using <https://github.com/engineervix/ubuntu-server-setup>
 
+> It's only been tested with Odoo 15.0 on Ubuntu 22.04
+
 ## Usage 🚀
 
 - First things first, this script **assumes** that your Ubuntu server has been setup using
@@ -40,6 +42,15 @@ Nginx, certbot, PostgreSQL, Node.js, etc. So we don't wanna install these things
 
 - we'd like to use a **virtual environment** to run Odoo
 - we wanna use **Systemd** and not **init**
+- this isn't a comprehensive script that covers multiple Odoo versions and Ubuntu versions (it's only been tested with Odoo 15.0 / Ubuntu 22.04. If you have other needs, please feel free to fork and customize)
+
+## References
+
+- [Odoo 15.0 Docs](https://www.odoo.com/documentation/15.0/administration/install/install.htm)
+- [Install and Deploy Odoo 15 from source on DigitalOcean](https://codingdodo.com/install-and-deploy-odoo-15-from-source-on-digitalocean/)
+- [How to Install Odoo 15 on Ubuntu 20.04 (linuxize.com)](https://linuxize.com/post/how-to-install-odoo-15-on-ubuntu-20-04/)
+- [How to Install Odoo 15 on Ubuntu 20.04 (speedysense.com)](https://speedysense.com/install-odoo-15-on-ubuntu-20-04/)
+- [How to Install Odoo on Ubuntu](https://phoenixnap.com/kb/install-odoo-ubuntu)
 
 ## Author
 
