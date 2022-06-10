@@ -32,7 +32,7 @@ This script builds on top of [Yenthe Van Ginneken's excellent and well known Odo
 - run the script to install Odoo:
 
   ```bash
-  ./odoo-install.sh
+  ./odoo_install.sh
   ```
 
 ## How is this script different from Yenthe VG's? 🖥️
