@@ -26,7 +26,7 @@
 # - ensure that it's executable:
 #   chmod +x odoo_install.sh
 # - execute the script to install Odoo:
-#   ./odoo-install.sh
+#   ./odoo_install.sh
 # 
 # How is this script different from Yenthe VG's ?
 # ----------------------------------------------
